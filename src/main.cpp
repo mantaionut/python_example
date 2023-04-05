@@ -1,13 +1,14 @@
 #include <pybind11/pybind11.h>
 
 #define STRINGIFY(x) #x
-#define MACRO_STRINGIFY(x) STRINGIFY(x)
 
-int add(int i, int j) {
-    return i + j;
+#define MACRO_STRINGIFY(x) STRINGIFY(x) 
+namespace py = pybind11;
+void add(int i, int j) {
+	throw py::value_error("some exception");
+    i + j*2;
 }
 
-namespace py = pybind11;
 
 PYBIND11_MODULE(python_example, m) {
     m.doc() = R"pbdoc(
@@ -16,13 +17,13 @@ PYBIND11_MODULE(python_example, m) {
 
         .. currentmodule:: python_example
 
-        .. autosummary::
+        .. autosummary::  
            :toctree: _generate
 
            add
            subtract
-    )pbdoc";
-
+    )pbdoc";    
+       
     m.def("add", &add, R"pbdoc(
         Add two numbers
 
